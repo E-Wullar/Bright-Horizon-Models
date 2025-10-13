@@ -7,6 +7,12 @@ from sklearn.metrics import classification_report, confusion_matrix, roc_auc_sco
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
+
+st.write("This is the Customer Churn Prediction app.")
+# Your existing code for Segmentation App goes here
+
+
 st.set_page_config(page_title="Churn Prediction Dashboard", layout="wide")
 st.title("📊 Churn Prediction Results (from Test Data)")
 
@@ -56,3 +62,4 @@ if model_file and test_features_file and test_labels_file:
 
 else:
     st.info("Please upload the model and test datasets to begin.")
+
