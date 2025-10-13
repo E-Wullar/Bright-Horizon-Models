@@ -4,6 +4,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.express as px
 
+import streamlit as st
+
+st.title("Segmentation App")
+st.write("This is the Segmentation app.")
+# Your existing code for Segmentation App goes here
+
 st.set_page_config(layout="wide")
 st.title("Customer Segmentation Dashboard")
 
@@ -88,3 +94,4 @@ if uploaded_file:
 
 else:
     st.info("Please upload a file to proceed.")
+
