@@ -23,8 +23,8 @@ st.title("🔍 BrightHorizon Fraud Detection Dashboard")
 st.write("Real-time fraud detection for financial transactions")
 
 # Check if model files exist
-model_exists = os.path.exists('fraud_detection_model.pkl')
-feature_importance_exists = os.path.exists('feature_importance.csv')
+model_exists = os.path.exists('models/fraud_detection_model.pkl')
+feature_importance_exists = os.path.exists('models/feature_importance.csv')
 performance_exists = os.path.exists('model_performance.csv')
 
 if not model_exists or not feature_importance_exists:
