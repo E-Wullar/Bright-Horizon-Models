@@ -8,6 +8,10 @@ import seaborn as sns
 import os
 from sklearn.metrics import confusion_matrix, classification_report, roc_curve, auc
 
+st.write("This is the Fraud Detection app.")
+# Your existing code for Segmentation App goes here
+
+
 # Set page configuration
 st.set_page_config(
     page_title="BrightHorizon Fraud Detection",
@@ -251,4 +255,5 @@ with st.sidebar.expander("Debug Info"):
     st.write(f"Model features: {all_model_features}")
     st.write(f"Number of features: {len(all_model_features)}")
     if hasattr(model, 'n_features_in_'):
+
         st.write(f"Model expects: {model.n_features_in_} features")
