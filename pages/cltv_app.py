@@ -7,7 +7,7 @@ st.write("This is the Customer LifeTime Value app.")
 # Your existing code for Segmentation App goes here
 
 # Load trained model
-model = joblib.load("cltv_model_filtered.pkl")
+model = joblib.load("models/cltv_model_filtered.pkl")
 
 st.title("Customer Lifetime Value (CLTV) Predictor")
 
