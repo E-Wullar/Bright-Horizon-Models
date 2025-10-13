@@ -2,6 +2,10 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+
+st.write("This is the Customer LifeTime Value app.")
+# Your existing code for Segmentation App goes here
+
 # Load trained model
 model = joblib.load("cltv_model_filtered.pkl")
 
@@ -50,3 +54,4 @@ input_data = pd.DataFrame([[
 if st.button("Predict CLTV"):
     prediction = model.predict(input_data)
     st.success(f"Estimated Customer Lifetime Value: GHS {prediction[0]:,.2f}")
+
