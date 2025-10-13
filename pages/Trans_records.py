@@ -8,6 +8,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+
+st.write("This is the Transaction Records app.")
+# Your existing code for Segmentation App goes here
+
+
 # Set page configuration
 st.set_page_config(
     page_title="BrightHorizon Transaction Analytics",
@@ -360,4 +365,5 @@ with tab5:
 
 # Footer
 st.markdown("---")
+
 st.markdown("**BrightHorizon Analytics Dashboard** | Created with Streamlit")
