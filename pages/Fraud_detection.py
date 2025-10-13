@@ -23,9 +23,9 @@ st.title("🔍 BrightHorizon Fraud Detection Dashboard")
 st.write("Real-time fraud detection for financial transactions")
 
 # Check if model files exist
-model_exists = os.path.exists('fraud_detection_model.pkl')
-feature_importance_exists = os.path.exists('feature_importance.csv')
-performance_exists = os.path.exists('model_performance.csv')
+model_exists = os.path.exists('models/fraud_detection_model.pkl')
+feature_importance_exists = os.path.exists('models/feature_importance.csv')
+performance_exists = os.path.exists('models/model_performance.csv')
 
 if not model_exists or not feature_importance_exists:
     st.error("❌ Model files not found! Please train the model first.")
@@ -37,9 +37,9 @@ if not model_exists or not feature_importance_exists:
 @st.cache_resource
 def load_assets():
     try:
-        model = joblib.load('models/fraud_detection_model.pkl')
+        model = joblib.load("models/fraud_detection_model.pkl")
         feature_importance = pd.read_csv('models/feature_importance.csv')
-        performance_data = pd.read_csv('model_performance.csv') if performance_exists else None
+        performance_data = pd.read_csv('models/model_performance.csv') if performance_exists else None
         return model, feature_importance, performance_data
     except Exception as e:
         st.error(f"Error loading files: {e}")
