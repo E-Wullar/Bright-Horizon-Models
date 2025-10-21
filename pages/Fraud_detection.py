@@ -8,10 +8,6 @@ import seaborn as sns
 import os
 from sklearn.metrics import confusion_matrix, classification_report, roc_curve, auc
 
-st.write("This is the Fraud Detection app.")
-# Your existing code for Segmentation App goes here
-
-
 # Set page configuration
 st.set_page_config(
     page_title="BrightHorizon Fraud Detection",
@@ -23,9 +19,9 @@ st.title("🔍 BrightHorizon Fraud Detection Dashboard")
 st.write("Real-time fraud detection for financial transactions")
 
 # Check if model files exist
-model_exists = os.path.exists('models/fraud_detection_model.pkl')
-feature_importance_exists = os.path.exists('models/feature_importance.csv')
-performance_exists = os.path.exists('models/model_performance.csv')
+model_exists = os.path.exists('fraud_detection_model.pkl')
+feature_importance_exists = os.path.exists('feature_importance.csv')
+performance_exists = os.path.exists('model_performance.csv')
 
 if not model_exists or not feature_importance_exists:
     st.error("❌ Model files not found! Please train the model first.")
@@ -37,9 +33,9 @@ if not model_exists or not feature_importance_exists:
 @st.cache_resource
 def load_assets():
     try:
-        model = joblib.load("models/fraud_detection_model.pkl")
-        feature_importance = pd.read_csv('models/feature_importance.csv')
-        performance_data = pd.read_csv('models/model_performance.csv') if performance_exists else None
+        model = joblib.load('fraud_detection_model.pkl')
+        feature_importance = pd.read_csv('feature_importance.csv')
+        performance_data = pd.read_csv('model_performance.csv') if performance_exists else None
         return model, feature_importance, performance_data
     except Exception as e:
         st.error(f"Error loading files: {e}")
@@ -73,14 +69,14 @@ display_features = [f for f in all_model_features if f not in ['Is_Night', 'Is_B
 
 # Sidebar navigation
 st.sidebar.title("Navigation")
-pages = ["Feature Importance", "Fraud Prediction", "Model Performance"]
+pages = ["Feature Importance", "Fraud Prediction"]
 page = st.sidebar.radio("Go to", pages)
 
 if page == "Feature Importance":
     st.header("📊 Feature Importance")
     
     # Display top features (excluding Is_Night and Is_Business_Hours)
-    top_features = feature_importance[~feature_importance['feature'].isin(['Is_Night', 'Is_Business_Hours'])].head(15)
+    top_features = feature_importance[~feature_importance['feature'].isin(['Is_Night', 'Is_Business_Hours'])].head(10)
     
     fig, ax = plt.subplots(figsize=(10, 8))
     sns.barplot(data=top_features, x='importance', y='feature', ax=ax)
@@ -91,7 +87,7 @@ if page == "Feature Importance":
     st.pyplot(fig)
     
     st.write("Important Features:")
-    st.dataframe(top_features.head(10))
+    st.dataframe(top_features.head(5))
     
 elif page == "Fraud Prediction":
     st.header("🔮 Fraud Prediction")
@@ -196,54 +192,8 @@ elif page == "Fraud Prediction":
             st.info("This usually happens when the input data doesn't match what the model was trained on.")
             st.info(f"Model expects {len(all_model_features)} features: {', '.join(all_model_features)}")
 
-elif page == "Model Performance":
-    st.header("📈 Model Performance Report")
-    
-    if performance_data is not None:
-        # Display performance metrics
-        st.subheader("Performance Metrics")
-        
-        # Create two columns for metrics
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            if 'accuracy' in performance_data.columns:
-                st.metric("Accuracy", f"{performance_data['accuracy'].iloc[0]:.2%}")
-            if 'precision' in performance_data.columns:
-                st.metric("Precision", f"{performance_data['precision'].iloc[0]:.2%}")
-            if 'recall' in performance_data.columns:
-                st.metric("Recall", f"{performance_data['recall'].iloc[0]:.2%}")
-        
-        with col2:
-            if 'f1_score' in performance_data.columns:
-                st.metric("F1 Score", f"{performance_data['f1_score'].iloc[0]:.2%}")
-            if 'roc_auc' in performance_data.columns:
-                st.metric("ROC AUC", f"{performance_data['roc_auc'].iloc[0]:.2%}")
-        
-        # Display confusion matrix if available
-        if all(col in performance_data.columns for col in ['tn', 'fp', 'fn', 'tp']):
-            st.subheader("Confusion Matrix")
-            tn = performance_data['tn'].iloc[0]
-            fp = performance_data['fp'].iloc[0]
-            fn = performance_data['fn'].iloc[0]
-            tp = performance_data['tp'].iloc[0]
-            
-            cm = np.array([[tn, fp], [fn, tp]])
-            fig, ax = plt.subplots(figsize=(6, 6))
-            sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
-                        xticklabels=['Legitimate', 'Fraud'],
-                        yticklabels=['Legitimate', 'Fraud'])
-            ax.set_xlabel('Predicted')
-            ax.set_ylabel('Actual')
-            ax.set_title('Confusion Matrix')
-            st.pyplot(fig)
-        
-        # Display classification report if available
-        if 'classification_report' in performance_data.columns:
-            st.subheader("Classification Report")
-            st.text(performance_data['classification_report'].iloc[0])
-    else:
-        st.warning("No performance data available. Please generate model performance metrics.")
+
+
 
 # Footer
 st.sidebar.markdown("---")
@@ -255,5 +205,4 @@ with st.sidebar.expander("Debug Info"):
     st.write(f"Model features: {all_model_features}")
     st.write(f"Number of features: {len(all_model_features)}")
     if hasattr(model, 'n_features_in_'):
-
         st.write(f"Model expects: {model.n_features_in_} features")
